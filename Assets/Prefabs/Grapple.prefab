@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  distanceBetweenNodes: 1
+  distanceBetweenNodes: 0.2
   nodePrefab: {fileID: 8391565849994796582, guid: de522984637e3f94a910de7b85aa4175,
     type: 3}
   nodes: []
