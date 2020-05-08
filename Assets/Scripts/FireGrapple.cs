@@ -59,4 +59,9 @@ public class FireGrapple : MonoBehaviour
     {
         return maxDistanceOfGrapple;
     }
+
+    public bool IsWebActive()
+    {
+        return isWebActive;
+    }
 }

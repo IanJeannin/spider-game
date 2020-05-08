@@ -8,7 +8,10 @@ public class PlayerMovement : MonoBehaviour
     private float speed;
     [SerializeField]
     private float maxVelocity;
+    [SerializeField]
+    private CircleCollider2D groundCheck;
 
+    private bool isGrounded=false;
     private Rigidbody2D rb2d;
     
     void Start()
@@ -21,14 +24,34 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
         float moveVertical = Input.GetAxisRaw("Vertical");
-        if(moveVertical!=0)
+
+        //Check if player is grounded
+        int layerMask = LayerMask.GetMask("Ground");
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(layerMask);
+        List<Collider2D> results = new List<Collider2D>();
+        groundCheck.OverlapCollider(filter, results);
+        if (results.Count > 0)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+
+        if(isGrounded==true||GetComponent<FireGrapple>().IsWebActive())
+        {
+            Vector2 movement = new Vector2(moveHorizontal, 0);
+            rb2d.AddForce(movement * speed);
+            rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+        }
+
+        if (moveVertical != 0)
         {
             GetComponent<FireGrapple>().CallChangePositionOnWeb(moveVertical);
         }
-        Vector2 movement = new Vector2(moveHorizontal,0);
-        
-        rb2d.AddForce(movement * speed);
-        rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+        Debug.Log(results.Count);
     }
 }
 
