@@ -14,6 +14,9 @@ public class Web : MonoBehaviour
     private List<GameObject> nodes = new List<GameObject>();
     [SerializeField]
     private LineRenderer lineRenderer;
+    [Tooltip("Multiplied by grapplePrefabs max grapple distance, player can move down web further than they can shoot web")]
+    [SerializeField]
+    private float maxWebDistanceModifier;
 
     private float maxAmountOfNodes;
     private Vector2 endPosition;
@@ -29,7 +32,7 @@ public class Web : MonoBehaviour
         lastNode = transform.gameObject;
         nodes.Add(transform.gameObject);
 
-        maxAmountOfNodes = player.GetComponent<FireGrapple>().GetMaxGrappleDistance() / distanceBetweenNodes;
+        maxAmountOfNodes = (player.GetComponent<FireGrapple>().GetMaxGrappleDistance() *maxWebDistanceModifier)/distanceBetweenNodes;
     }
 
     private void FixedUpdate()
@@ -110,7 +113,7 @@ public class Web : MonoBehaviour
                 if (nodes.Count < maxAmountOfNodes)
                 {
                     CreateNode();
-                    player.transform.position = lastNode.transform.position;
+                    //player.transform.position = lastNode.transform.position;
                     lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
                 }
             }

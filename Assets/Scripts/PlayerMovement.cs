@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("The number that speed will be divided by while in the air")]
     [SerializeField]
     private float airControlModifier;
+    [SerializeField]
+    private float swingControlModifier;
 
     private bool isGrounded=false;
     private Rigidbody2D rb2d;
@@ -43,10 +45,16 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
         }
 
-        if(isGrounded==true||GetComponent<FireGrapple>().IsWebActive())
+        if(isGrounded==true)
         {
             Vector2 movement = new Vector2(moveHorizontal, 0);
             rb2d.AddForce(movement * speed);
+            rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+        }
+        else if(GetComponent<FireGrapple>().IsWebActive())
+        {
+            Vector2 movement = new Vector2(moveHorizontal, 0);
+            rb2d.AddForce((movement * speed)/swingControlModifier);
             rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
         }
         else
