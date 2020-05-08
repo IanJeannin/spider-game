@@ -94,22 +94,25 @@ public class Web : MonoBehaviour
 
     public void ChangePositionOnWeb(float verticalAxis)
     {
-        //For moving up: Set players position to closest node, remove and destroy that node, and connect the node after to the player
-        if (verticalAxis > 0 &&nodes.Count>1)
+        if (done == true)
         {
-            player.transform.position = lastNode.transform.position;
-            nodes.Remove(lastNode);
-            Destroy(lastNode);
-            lastNode = nodes[nodes.Count - 1];
-            nodes[nodes.Count - 1].GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
-        }
-        else
-        {
-            if (nodes.Count < maxAmountOfNodes)
+            //For moving up: Set players position to closest node, remove and destroy that node, and connect the node after to the player
+            if (verticalAxis > 0 && nodes.Count > 1)
             {
-                CreateNode();
                 player.transform.position = lastNode.transform.position;
-                lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+                nodes.Remove(lastNode);
+                Destroy(lastNode);
+                lastNode = nodes[nodes.Count - 1];
+                nodes[nodes.Count - 1].GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+            }
+            else
+            {
+                if (nodes.Count < maxAmountOfNodes)
+                {
+                    CreateNode();
+                    player.transform.position = lastNode.transform.position;
+                    lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+                }
             }
         }
     }
