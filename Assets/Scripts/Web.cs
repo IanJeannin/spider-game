@@ -15,6 +15,7 @@ public class Web : MonoBehaviour
     [SerializeField]
     private LineRenderer lineRenderer;
 
+    private float maxAmountOfNodes;
     private Vector2 endPosition;
     private GameObject player;
     private GameObject lastNode;
@@ -26,8 +27,9 @@ public class Web : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         player = GameObject.FindGameObjectWithTag("Player");
         lastNode = transform.gameObject;
-
         nodes.Add(transform.gameObject);
+
+        maxAmountOfNodes = player.GetComponent<FireGrapple>().GetMaxGrappleDistance() / distanceBetweenNodes;
     }
 
     private void FixedUpdate()
@@ -89,4 +91,27 @@ public class Web : MonoBehaviour
         nodes.Add(lastNode);
         vertexCount++;
     }
+
+    public void ChangePositionOnWeb(float verticalAxis)
+    {
+        //For moving up: Set players position to closest node, remove and destroy that node, and connect the node after to the player
+        if (verticalAxis > 0 &&nodes.Count>1)
+        {
+            player.transform.position = lastNode.transform.position;
+            nodes.Remove(lastNode);
+            Destroy(lastNode);
+            lastNode = nodes[nodes.Count - 1];
+            nodes[nodes.Count - 1].GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+        }
+        else
+        {
+            if (nodes.Count < maxAmountOfNodes)
+            {
+                CreateNode();
+                player.transform.position = lastNode.transform.position;
+                lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
+            }
+        }
+    }
+
 }

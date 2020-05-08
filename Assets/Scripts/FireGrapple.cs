@@ -46,4 +46,17 @@ public class FireGrapple : MonoBehaviour
             }
         }
     }
+
+    public void CallChangePositionOnWeb(float verticalAxis)
+    {
+        if(currentGrapple!=null)
+        {
+            currentGrapple.GetComponent<Web>().ChangePositionOnWeb(verticalAxis);
+        }
+    }
+
+    public float GetMaxGrappleDistance()
+    {
+        return maxDistanceOfGrapple;
+    }
 }

@@ -20,6 +20,11 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        float moveVertical = Input.GetAxisRaw("Vertical");
+        if(moveVertical!=0)
+        {
+            GetComponent<FireGrapple>().CallChangePositionOnWeb(moveVertical);
+        }
         Vector2 movement = new Vector2(moveHorizontal,0);
         
         rb2d.AddForce(movement * speed);
