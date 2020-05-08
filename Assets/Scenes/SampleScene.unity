@@ -446,6 +446,7 @@ MonoBehaviour:
   speed: 50
   maxVelocity: 10
   groundCheck: {fileID: 634338321}
+  airControlModifier: 4
 --- !u!61 &1497472254
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -455,7 +456,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1497472252}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 21336a0fb711f5a4fa84b2847380ca8b, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0

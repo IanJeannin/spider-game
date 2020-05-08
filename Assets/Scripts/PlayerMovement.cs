@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     private float maxVelocity;
     [SerializeField]
     private CircleCollider2D groundCheck;
+    [Tooltip("The number that speed will be divided by while in the air")]
+    [SerializeField]
+    private float airControlModifier;
 
     private bool isGrounded=false;
     private Rigidbody2D rb2d;
@@ -44,6 +47,12 @@ public class PlayerMovement : MonoBehaviour
         {
             Vector2 movement = new Vector2(moveHorizontal, 0);
             rb2d.AddForce(movement * speed);
+            rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+        }
+        else
+        {
+            Vector2 movement = new Vector2(moveHorizontal, 0);
+            rb2d.AddForce((movement * speed)/airControlModifier);
             rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
         }
 
