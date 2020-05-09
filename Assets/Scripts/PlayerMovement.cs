@@ -15,21 +15,23 @@ public class PlayerMovement : MonoBehaviour
     private float airControlModifier;
     [SerializeField]
     private float swingControlModifier;
+    [SerializeField]
+    private float jumpHeight;
 
     private bool isGrounded=false;
     private Rigidbody2D rb2d;
+    private float moveHorizontal;
+    private float moveVertical;
     
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
     }
 
-   
-    void FixedUpdate()
+    private void Update()
     {
-        float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        float moveVertical = Input.GetAxisRaw("Vertical");
-
+        moveHorizontal = Input.GetAxisRaw("Horizontal");
+        moveVertical = Input.GetAxisRaw("Vertical");
         //Check if player is grounded
         int layerMask = LayerMask.GetMask("Ground");
         ContactFilter2D filter = new ContactFilter2D();
@@ -44,20 +46,27 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = false;
         }
+        if(isGrounded==true&&Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
+    }
 
+    void FixedUpdate()
+    {
         if(isGrounded==true)
         {
             Vector2 movement = new Vector2(moveHorizontal, 0);
             rb2d.AddForce(movement * speed);
             rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
         }
-        else if(GetComponent<FireGrapple>().IsWebActive())
+        else if(GetComponent<FireGrapple>().IsWebActive()) //If the player is not grounded but attached to the web
         {
             Vector2 movement = new Vector2(moveHorizontal, 0);
             rb2d.AddForce((movement * speed)/swingControlModifier);
             rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
         }
-        else
+        else //If the player is in midair
         {
             Vector2 movement = new Vector2(moveHorizontal, 0);
             rb2d.AddForce((movement * speed)/airControlModifier);
@@ -68,7 +77,17 @@ public class PlayerMovement : MonoBehaviour
         {
             GetComponent<FireGrapple>().CallChangePositionOnWeb(moveVertical);
         }
-        Debug.Log(results.Count);
+        Debug.Log(isGrounded);
+    }
+
+    private void Jump()
+    {
+        rb2d.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+    }
+    
+    public bool GetIsGrounded()
+    {
+        return isGrounded;
     }
 }
 
