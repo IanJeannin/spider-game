@@ -51,18 +51,21 @@ public class FireGrapple : MonoBehaviour
                     currentGrapple.GetComponent<Rigidbody2D>().AddForce(endPosition * speedOfGrapple);
                     currentGrapple.GetComponent<Web>().SetEndPosition(endPosition);
                     isWebActive = true;
+                    currentGrapple.transform.SetParent(raycastHit.collider.transform);
                     currentNumberOfWebs++;
                 }
             }
             else
             {
                 Destroy(currentGrapple);
+                currentGrapple.transform.SetParent(null);
                 isWebActive = false;
             }
         }
         if(isWebActive==true&&Input.GetKeyDown(KeyCode.Space))
         {
             Destroy(currentGrapple);
+            currentGrapple.transform.SetParent(null);
             isWebActive = false;
         }
 

@@ -37,9 +37,9 @@ public class Web : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = Vector2.MoveTowards(transform.position, endPosition, speed);
+       // GetComponent<HingeJoint2D>().autoConfigureConnectedAnchor = true;
 
-        if((Vector2)transform.position != (Vector2)endPosition)
+        if (done==false&&(Vector2)transform.position != (Vector2)endPosition)
         {
             if(Vector2.Distance(player.transform.position, lastNode.transform.position)>distanceBetweenNodes)
             {
@@ -59,6 +59,7 @@ public class Web : MonoBehaviour
             lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
         }
         RenderLine();
+       // GetComponent<HingeJoint2D>().autoConfigureConnectedAnchor = false;
     }
 
     public void SetEndPosition(Vector2 newEndPosition)
