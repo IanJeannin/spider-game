@@ -105,6 +105,7 @@ public class Web : MonoBehaviour
                 player.transform.position = lastNode.transform.position;
                 nodes.Remove(lastNode);
                 Destroy(lastNode);
+                vertexCount--;
                 lastNode = nodes[nodes.Count - 1];
                 nodes[nodes.Count - 1].GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
             }

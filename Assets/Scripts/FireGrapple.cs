@@ -21,13 +21,16 @@ public class FireGrapple : MonoBehaviour
     private bool isWebActive;
     private LineRenderer lineRenderer;
     private float currentNumberOfWebs = 0;
+    private LayerMask layerMask;
 
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         lineRenderer = GetComponent<LineRenderer>();
+        layerMask = LayerMask.GetMask("Ground");
     }
+
     private void Update()
     {
         bool isGrounded = GetComponent<PlayerMovement>().GetIsGrounded();
@@ -39,7 +42,6 @@ public class FireGrapple : MonoBehaviour
         {
             if (isWebActive == false&&currentNumberOfWebs<maxWebs)
             {
-                int layerMask = LayerMask.GetMask("Ground");
                 Vector2 clickedPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 raycastHit = Physics2D.Raycast(player.transform.position, clickedPosition - (Vector2)player.transform.position, maxDistanceOfGrapple,layerMask);
                 if(raycastHit.collider!=null)
@@ -63,8 +65,23 @@ public class FireGrapple : MonoBehaviour
             Destroy(currentGrapple);
             isWebActive = false;
         }
-        maxDistanceRaycast = Physics2D.Raycast(player.transform.position, Input.mousePosition, maxDistanceOfGrapple);
 
+        lineRenderer.positionCount = 2;
+        maxDistanceRaycast = Physics2D.Raycast(player.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition)-player.transform.position, maxDistanceOfGrapple,layerMask);
+        Vector2 origin = new Vector3(0, 0);
+        if (maxDistanceRaycast.point!=origin)
+        {
+            lineRenderer.SetPosition(0, player.transform.position);
+            lineRenderer.SetPosition(1, maxDistanceRaycast.point);
+        }
+        else
+        {
+            Vector3 mousePos = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.transform.position);
+            mousePos=Vector3.Normalize(mousePos);
+            Vector3 maxGrapple = player.transform.position+mousePos * maxDistanceOfGrapple;
+            lineRenderer.SetPosition(0, player.transform.position);
+            lineRenderer.SetPosition(1, maxGrapple);
+        }
     }
 
     public void CallChangePositionOnWeb(float verticalAxis)
