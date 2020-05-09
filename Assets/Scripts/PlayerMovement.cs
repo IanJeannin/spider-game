@@ -77,7 +77,6 @@ public class PlayerMovement : MonoBehaviour
         {
             GetComponent<FireGrapple>().CallChangePositionOnWeb(moveVertical);
         }
-        Debug.Log(isGrounded);
     }
 
     private void Jump()

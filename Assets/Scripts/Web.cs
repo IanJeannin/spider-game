@@ -99,8 +99,9 @@ public class Web : MonoBehaviour
     {
         if (done == true)
         {
+            Debug.Log(nodes.Count);
             //For moving up: Set players position to closest node, remove and destroy that node, and connect the node after to the player
-            if (verticalAxis > 0 && nodes.Count > 1)
+            if (verticalAxis > 0 && nodes.Count > 2)
             {
                 player.transform.position = lastNode.transform.position;
                 nodes.Remove(lastNode);
@@ -109,14 +110,11 @@ public class Web : MonoBehaviour
                 lastNode = nodes[nodes.Count - 1];
                 nodes[nodes.Count - 1].GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
             }
-            else
+            else if(verticalAxis<0&&nodes.Count<maxAmountOfNodes)
             {
-                if (nodes.Count < maxAmountOfNodes)
-                {
                     CreateNode();
                     //player.transform.position = lastNode.transform.position;
                     lastNode.GetComponent<HingeJoint2D>().connectedBody = player.GetComponent<Rigidbody2D>();
-                }
             }
         }
     }
