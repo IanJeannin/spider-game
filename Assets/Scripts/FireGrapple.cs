@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FireGrapple : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class FireGrapple : MonoBehaviour
     [Tooltip("The max amount of webs able to be shot before touching the ground again.")]
     [SerializeField]
     private int maxWebs=2;
+    [SerializeField]
+    private Text webCounter;
 
     private GameObject currentGrapple;
     private GameObject player;
@@ -33,6 +36,8 @@ public class FireGrapple : MonoBehaviour
 
     private void Update()
     {
+        float counter = maxWebs - currentNumberOfWebs;
+        webCounter.text = counter.ToString();
         bool isGrounded = GetComponent<PlayerMovement>().GetIsGrounded();
         if(isGrounded==true)
         {

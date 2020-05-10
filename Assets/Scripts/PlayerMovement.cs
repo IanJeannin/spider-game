@@ -17,6 +17,8 @@ public class PlayerMovement : MonoBehaviour
     private float swingControlModifier;
     [SerializeField]
     private float jumpHeight;
+    [SerializeField]
+    private bool isJumpEnabled=false;
 
     private bool isGrounded=false;
     private bool isSliding = false;
@@ -61,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
             isGrounded = false;
             isSliding = false;
         }
-        if(isGrounded==true&&Input.GetKeyDown(KeyCode.Space))
+        if(isGrounded==true&&Input.GetKeyDown(KeyCode.Space)&&isJumpEnabled)
         {
             Jump();
         }
