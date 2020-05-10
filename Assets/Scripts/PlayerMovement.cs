@@ -31,6 +31,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetAxisRaw("Vertical");
         //Check if player is grounded
@@ -61,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
         {
             Jump();
         }
-        Debug.Log(results[0]);
     }
 
     void FixedUpdate()
