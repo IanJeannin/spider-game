@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
+    private GameObject collectibleCounter;
+
+    private void Start()
+    {
+        collectibleCounter = GameObject.FindGameObjectWithTag("CollectibleCounter");
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<PlayerMovement>() != null)
         {
-            collision.GetComponent<PlayerMovement>().AddCollectible();
+            collectibleCounter.GetComponent<CollectibleCounter>().AddCollectible();
             Destroy(gameObject);
         }
     }

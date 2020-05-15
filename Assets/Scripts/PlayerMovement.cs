@@ -23,15 +23,17 @@ public class PlayerMovement : MonoBehaviour
     private bool isJumpEnabled=false;
     [SerializeField]
     private float groundCheckDistance=1f;
+    [SerializeField]
+    private float groundCheckHorizontalAdjustment=0.2f;
 
     private bool isGrounded=false;
     private bool isSliding = false;
     private Rigidbody2D rb2d;
     private float moveHorizontal;
     private float moveVertical;
-    private int collectibles = 0;
     private float massOffWeb;
     private RaycastHit2D groundCheckRaycast;
+    private RaycastHit2D groundCheckRaycast2;
     private Animator animator;
 
     void Start()
@@ -54,27 +56,29 @@ public class PlayerMovement : MonoBehaviour
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(layerMask);
         List<Collider2D> results = new List<Collider2D>();
-        groundCheckRaycast = Physics2D.Raycast(transform.position, Vector2.down,groundCheckDistance,layerMask);
-        if (groundCheckRaycast.transform != null)
+        Vector2 horizontalAdjustment = new Vector2(groundCheckHorizontalAdjustment, 0);
+        groundCheckRaycast = Physics2D.Raycast((Vector2)transform.position+horizontalAdjustment, Vector2.down,groundCheckDistance,layerMask);
+        groundCheckRaycast2 = Physics2D.Raycast((Vector2)transform.position-horizontalAdjustment, Vector2.down, groundCheckDistance, layerMask);
+        if (groundCheckRaycast.transform != null ||groundCheckRaycast2.transform!=null)
         {
-            if (groundCheckRaycast.transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            if ((groundCheckRaycast.transform!=null&&groundCheckRaycast.transform.gameObject.layer == LayerMask.NameToLayer("Ground"))|| (groundCheckRaycast2.transform!=null&&groundCheckRaycast2.transform.gameObject.layer == LayerMask.NameToLayer("Ground")))
             {
                 isGrounded = true;
                 isSliding = false;
             }
-            else if (groundCheckRaycast.transform.gameObject.layer == LayerMask.NameToLayer("Water"))
+            else if ((groundCheckRaycast.transform != null && groundCheckRaycast.transform.gameObject.layer == LayerMask.NameToLayer("Water")) || (groundCheckRaycast2.transform != null && groundCheckRaycast2.transform.gameObject.layer == LayerMask.NameToLayer("Water")))
             {
                 isSliding = true;
                 isGrounded = false;
             }
-            
-            Debug.Log(isGrounded);
         }
         else
         {
             isGrounded = false;
             isSliding = false;
         }
+        Debug.Log("Is grounded: "+isGrounded);
+        Debug.Log("Is sliding: " + isSliding);
         /*groundCheck.OverlapCollider(filter, results);
         
         if (results.Count > 0)
@@ -158,11 +162,6 @@ public class PlayerMovement : MonoBehaviour
     {
         return isGrounded;
     }
-
-    public void AddCollectible()
-    {
-        collectibles++;
-        Debug.Log("Collectibles Collected: " + collectibles);
-    }
+    
 }
 
