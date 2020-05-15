@@ -25,7 +25,6 @@ public class MovingPlatform : MonoBehaviour
         Vector2 direction = positions[positionsIndex].position - transform.position;
         direction = Vector3.Normalize(direction);
         rb2d.velocity=direction*speed;
-        Debug.Log(positionsIndex);
     }
 
     private void OnDrawGizmos()
@@ -38,7 +37,6 @@ public class MovingPlatform : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("COLLIDED");
         if(collision.gameObject.layer==10)
         {
             if (positionsIndex < positions.Length - 1)

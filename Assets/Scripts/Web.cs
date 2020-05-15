@@ -100,7 +100,6 @@ public class Web : MonoBehaviour
     {
         if (done == true)
         {
-            Debug.Log(nodes.Count);
             //For moving up: Set players position to closest node, remove and destroy that node, and connect the node after to the player
             if (verticalAxis > 0 && nodes.Count > 2)
             {

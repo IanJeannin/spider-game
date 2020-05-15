@@ -31,6 +31,7 @@ public class FireGrapple : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.material.color = Color.white;
         layerMask = LayerMask.GetMask("Ground");
     }
 
@@ -60,12 +61,12 @@ public class FireGrapple : MonoBehaviour
                     currentNumberOfWebs++;
                 }
             }
-            else
+            /*else
             {
                 Destroy(currentGrapple);
                 currentGrapple.transform.SetParent(null);
                 isWebActive = false;
-            }
+            }*/
         }
         if(isWebActive==true&&Input.GetKeyDown(KeyCode.Space))
         {
@@ -74,21 +75,31 @@ public class FireGrapple : MonoBehaviour
             isWebActive = false;
         }
 
-        lineRenderer.positionCount = 2;
-        maxDistanceRaycast = Physics2D.Raycast(player.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition)-player.transform.position, maxDistanceOfGrapple,layerMask);
-        Vector2 origin = new Vector3(0, 0);
-        if (maxDistanceRaycast.point!=origin)
+        if (currentNumberOfWebs < maxWebs)
         {
-            lineRenderer.SetPosition(0, player.transform.position);
-            lineRenderer.SetPosition(1, maxDistanceRaycast.point);
+            lineRenderer.enabled = true;
+            lineRenderer.positionCount = 2;
+            maxDistanceRaycast = Physics2D.Raycast(player.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.transform.position, maxDistanceOfGrapple, layerMask);
+            Vector2 origin = new Vector3(0, 0);
+            lineRenderer.SetColors(Color.white, Color.white);
+        
+            if (maxDistanceRaycast.point != origin)
+            {
+                lineRenderer.SetPosition(0, player.transform.position);
+                lineRenderer.SetPosition(1, maxDistanceRaycast.point);
+            }
+            else
+            {
+                Vector3 mousePos = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.transform.position);
+                mousePos = Vector3.Normalize(mousePos);
+                Vector3 maxGrapple = player.transform.position + mousePos * maxDistanceOfGrapple;
+                lineRenderer.SetPosition(0, player.transform.position);
+                lineRenderer.SetPosition(1, maxGrapple);
+            }
         }
         else
         {
-            Vector3 mousePos = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.transform.position);
-            mousePos=Vector3.Normalize(mousePos);
-            Vector3 maxGrapple = player.transform.position+mousePos * maxDistanceOfGrapple;
-            lineRenderer.SetPosition(0, player.transform.position);
-            lineRenderer.SetPosition(1, maxGrapple);
+            lineRenderer.enabled = false;
         }
     }
 
