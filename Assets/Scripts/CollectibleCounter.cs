@@ -7,6 +7,8 @@ public class CollectibleCounter : MonoBehaviour
 {
     [SerializeField]
     private Text collectiblesDisplay;
+    [SerializeField]
+    private AudioSource audioSource;
 
     private int collectiblesCollected = 0;
     private int maxCollectibles;
@@ -27,5 +29,6 @@ public class CollectibleCounter : MonoBehaviour
     public void AddCollectible()
     {
         collectiblesCollected++;
+        audioSource.Play();
     }
 }
