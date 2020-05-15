@@ -60,12 +60,12 @@ public class FireGrapple : MonoBehaviour
                     currentNumberOfWebs++;
                 }
             }
-            else
+            /*else
             {
                 Destroy(currentGrapple);
                 currentGrapple.transform.SetParent(null);
                 isWebActive = false;
-            }
+            }*/
         }
         if(isWebActive==true&&Input.GetKeyDown(KeyCode.Space))
         {

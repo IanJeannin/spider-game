@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb2d;
     private float moveHorizontal;
     private float moveVertical;
+    private int collectibles = 0;
     
     void Start()
     {
@@ -107,6 +108,12 @@ public class PlayerMovement : MonoBehaviour
     public bool GetIsGrounded()
     {
         return isGrounded;
+    }
+
+    public void AddCollectible()
+    {
+        collectibles++;
+        Debug.Log("Collectibles Collected: " + collectibles);
     }
 }
 
