@@ -21,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     private float jumpHeight;
     [SerializeField]
     private bool isJumpEnabled=false;
+    [SerializeField]
+    private float groundCheckDistance=1f;
 
     private bool isGrounded=false;
     private bool isSliding = false;
@@ -50,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(layerMask);
         List<Collider2D> results = new List<Collider2D>();
-        groundCheckRaycast = Physics2D.Raycast(transform.position, Vector2.down,1f,layerMask);
+        groundCheckRaycast = Physics2D.Raycast(transform.position, Vector2.down,groundCheckDistance,layerMask);
         if (groundCheckRaycast.transform != null)
         {
             if (groundCheckRaycast.transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
