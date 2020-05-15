@@ -32,9 +32,11 @@ public class PlayerMovement : MonoBehaviour
     private int collectibles = 0;
     private float massOffWeb;
     private RaycastHit2D groundCheckRaycast;
+    private Animator animator;
 
     void Start()
     {
+        animator = gameObject.GetComponent<Animator>();
         rb2d = GetComponent<Rigidbody2D>();
         massOffWeb = rb2d.mass;
     }
@@ -108,9 +110,17 @@ public class PlayerMovement : MonoBehaviour
                 rb2d.freezeRotation = true;
                 rb2d.rotation = 0;
                 rb2d.mass = massOffWeb;
-                Vector2 movement = new Vector2(moveHorizontal, 0);
-                rb2d.AddForce(movement * speed);
-                rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+                if (moveHorizontal != 0)
+                {
+                    Vector2 movement = new Vector2(moveHorizontal, 0);
+                    rb2d.AddForce(movement * speed);
+                    rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+                    animator.SetBool("isWalking", true);
+                }
+                else
+                {
+                    animator.SetBool("isWalking", false);
+                }
             }
             else if (GetComponent<FireGrapple>().IsWebActive()) //If the player is not grounded but attached to the web
             {
@@ -119,6 +129,7 @@ public class PlayerMovement : MonoBehaviour
                 Vector2 movement = new Vector2(moveHorizontal, 0);
                 rb2d.AddForce((movement * speed) / swingControlModifier);
                 rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+                animator.SetBool("isWalking", false);
             }
             else //If the player is in midair
             {
@@ -128,6 +139,7 @@ public class PlayerMovement : MonoBehaviour
                 Vector2 movement = new Vector2(moveHorizontal, 0);
                 rb2d.AddForce((movement * speed) / airControlModifier);
                 rb2d.velocity = Vector2.ClampMagnitude(rb2d.velocity, maxVelocity);
+                animator.SetBool("isWalking", false);
             }
 
             if (moveVertical != 0)
