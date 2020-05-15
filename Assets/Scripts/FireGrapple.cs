@@ -31,6 +31,7 @@ public class FireGrapple : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         lineRenderer = GetComponent<LineRenderer>();
+        lineRenderer.material.color = Color.white;
         layerMask = LayerMask.GetMask("Ground");
     }
 
@@ -80,6 +81,7 @@ public class FireGrapple : MonoBehaviour
             lineRenderer.positionCount = 2;
             maxDistanceRaycast = Physics2D.Raycast(player.transform.position, Camera.main.ScreenToWorldPoint(Input.mousePosition) - player.transform.position, maxDistanceOfGrapple, layerMask);
             Vector2 origin = new Vector3(0, 0);
+            lineRenderer.SetColors(Color.white, Color.white);
         
             if (maxDistanceRaycast.point != origin)
             {
